@@ -1,0 +1,18 @@
+***************
+*** 40,45 ****
+  .B \-b
+  dmenu appears at the bottom of the screen.
+  .TP
+  .B \-f
+  dmenu grabs the keyboard before reading stdin if not reading from a tty. This
+  is faster, but will lock up X until stdin reaches end\-of\-file.
+--- 40,48 ----
+  .B \-b
+  dmenu appears at the bottom of the screen.
+  .TP
++ .B \-c
++ dmenu appears centered on the screen.
++ .TP
+  .B \-f
+  dmenu grabs the keyboard before reading stdin if not reading from a tty. This
+  is faster, but will lock up X until stdin reaches end\-of\-file.
