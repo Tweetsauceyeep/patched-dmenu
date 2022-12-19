@@ -1,31 +1,47 @@
 ***************
-*** 732,742 ****
-  		if (!XGetWindowAttributes(dpy, parentwin, &wa))
-  			die("could not get embedding window attributes: 0x%lx",
-  			    parentwin);
-- 		x = 0;
-- 		y = topbar ? 0 : wa.height - mh;
-- 		mw = wa.width;
-  	}
-- 	promptw = (prompt && *prompt) ? TEXTW(prompt) - lrpad / 4 : 0;
-  	inputw = MIN(inputw, mw/3);
-  	match();
+*** 24,29 ****
+                               * MAX(0, MIN((y)+(h),(r).y_org+(r).height) - MAX((y),(r).y_org)))
+  #define LENGTH(X)             (sizeof X / sizeof X[0])
+  #define TEXTW(X)              (drw_fontset_getwidth(drw, (X)) + lrpad)
   
---- 749,765 ----
-  		if (!XGetWindowAttributes(dpy, parentwin, &wa))
-  			die("could not get embedding window attributes: 0x%lx",
-  			    parentwin);
-+ 
-+ 		if (centered) {
-+ 			mw = MIN(MAX(max_textw() + promptw, min_width), wa.width);
-+ 			x = (wa.width  - mw) / 2;
-+ 			y = (wa.height - mh) / 2;
-+ 		} else {
-+ 			x = 0;
-+ 			y = topbar ? 0 : wa.height - mh;
-+ 			mw = wa.width;
-+ 		}
-  	}
-  	inputw = MIN(inputw, mw/3);
-  	match();
+  /* enums */
+  enum { SchemeNorm, SchemeSel, SchemeOut, SchemeLast }; /* color schemes */
+--- 24,30 ----
+                               * MAX(0, MIN((y)+(h),(r).y_org+(r).height) - MAX((y),(r).y_org)))
+  #define LENGTH(X)             (sizeof X / sizeof X[0])
+  #define TEXTW(X)              (drw_fontset_getwidth(drw, (X)) + lrpad)
++ #define OPAQUE                0xffU
   
+  /* enums */
+  enum { SchemeNorm, SchemeSel, SchemeOut, SchemeLast }; /* color schemes */
+***************
+*** 751,764 ****
+  
+  	/* create menu window */
+  	swa.override_redirect = True;
+- 	swa.background_pixel = scheme[SchemeNorm][ColBg].pixel;
+  	swa.event_mask = ExposureMask | KeyPressMask | VisibilityChangeMask;
+  	win = XCreateWindow(dpy, parentwin, x, y, mw, mh, 0,
+- 	                    CopyFromParent, CopyFromParent, CopyFromParent,
+- 	                    CWOverrideRedirect | CWBackPixel | CWEventMask, &swa);
+  	XSetClassHint(dpy, win, &ch);
+  
+- 
+  	/* input methods */
+  	if ((xim = XOpenIM(dpy, NULL, NULL, NULL)) == NULL)
+  		die("XOpenIM failed: could not open input device");
+--- 794,807 ----
+  
+  	/* create menu window */
+  	swa.override_redirect = True;
++ 	swa.background_pixel = 0;
++ 	swa.colormap = cmap;
+  	swa.event_mask = ExposureMask | KeyPressMask | VisibilityChangeMask;
+  	win = XCreateWindow(dpy, parentwin, x, y, mw, mh, 0,
++ 	                    depth, InputOutput, visual,
++ 	                    CWOverrideRedirect|CWBackPixel|CWBorderPixel|CWColormap|CWEventMask, &swa);
+  	XSetClassHint(dpy, win, &ch);
+  
+  	/* input methods */
+  	if ((xim = XOpenIM(dpy, NULL, NULL, NULL)) == NULL)
+  		die("XOpenIM failed: could not open input device");
