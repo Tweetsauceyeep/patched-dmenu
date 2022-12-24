@@ -1,4 +1,6 @@
-ayo breh this stuff really messy but yeah its alr
+### Patched Dmenu
+- added patches to make it work on mac os through [Xquartz](https://www.xquartz.org/)
+
 
 
 dmenu - dynamic menu

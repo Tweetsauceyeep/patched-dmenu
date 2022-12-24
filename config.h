@@ -7,13 +7,13 @@ static int min_width = 500;                    /* minimum width when centered */
 static const unsigned int border_width = 3;
 /* -fn option overrides fonts[0]; default X11 font or font set */
 static const char *fonts[] = {
-	"Iosevka Nerd Font:Bold:size=11"
+	"Iosevka Nerd Font:Bold:size=10"
 };
 static const char *prompt      = NULL;      /* -p  option; prompt to the left of input field */
 static const char *colors[SchemeLast][2] = {
 	/*     fg         bg       */
 	[SchemeNorm] = { "#ebdbb2", "#151515" },
-	[SchemeSel] = { "#ebdbb2", "#689d6a" },
+	[SchemeSel] = { "#ebdbb2", "#458588" },
 	[SchemeSelHighlight] = { "#ebdbb2", "#fb4934" },
 	[SchemeNormHighlight] = { "#689d6a", "#ebdbb2" },
 	[SchemeOut] = { "#000000", "#2E3440" },
